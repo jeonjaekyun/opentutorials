@@ -1,0 +1,20 @@
+var arr = ['A','B','C','D'];
+var arr2 = new Array();
+
+console.log(arr[0]);
+console.log(arr[2]);
+arr[2] = 3;
+console.log(arr);
+console.log(arr.length);
+arr.push(5);
+console.log(arr);
+arr.pop();
+console.log(arr);
+arr.unshift(1);
+console.log(arr);
+arr.reverse();
+console.log(arr);
+arr.sort();
+console.log(arr);
+console.log(arr.splice(0,3,1,2,3,4));
+console.log(arr);
