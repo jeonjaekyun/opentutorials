@@ -113,7 +113,8 @@ var app = http.createServer(function (request, response) {
       var title = post.title;
       var description = post.description;
       fs.rename(`./data/${id}`,`./data/${title}`,function(err){
-        //${title}이 ../test 형태로 들어 온다면?
+        //${title}이 ../test 형태로 들어 온다면? path.parse(var).base로 받아온다.
+        //File이 아닌 DB를 사용하여서 해결?
         fs.writeFile(`./data/${title}`, description, 'utf8', function (err) {
           response.writeHead(302, { Location: `/?id=${title}` });
           response.end('sucess');
