@@ -8,13 +8,14 @@ exports.home = function (request, response) {
         if (err) {
             console.log(err);
         }
-        title = 'Welcome';
-        description = 'Hello, Nodejs';
+        var title = 'Welcome';
+        var description = 'Hello, Nodejs';
         var list = template.list(topics);
         console.log(list);
         var html = template.HTML(title, list,
             `<h2>${title}</h2>${description}`,
-            `<a href="/create">create</a>`);
+            `<a href="/create">create</a>`,
+            `<a href="/author">author_create</a>`);
         response.writeHead(200);
         response.end(html);
     });
@@ -26,7 +27,8 @@ exports.page = function (request, response) {
     var queryData = url.parse(_url, true).query;
     db.query(`select * from topic`, function (err, topics) {
         if (err) throw err;
-        //보안을 위해 ?를 사용한다.
+        //보안을 위해 ?를 사용한다.(SQL Injection을 막아준다.)
+        //db.escape();로도 ?와 같은 효과를 볼수 있다.
         db.query(
             `select t.id, title, description, created, author_id, name
            from topic as t left join author as a
@@ -58,8 +60,8 @@ exports.page = function (request, response) {
 exports.create = function(request, response){
     db.query(`select * from author`,function(err, authors){
         console.log(authors);
-        title = 'WEB - Create';
-        var selectAuthor = template.authorList(authors);
+        var title = 'WEB - Create';
+        var selectAuthor = template.authorName(authors);
 
         var html = template.HTML(title, '', `
           <h2>${title}</h2>
@@ -91,8 +93,8 @@ exports.create_process = function(request, response){
       var post = qs.parse(body);
       console.log(post);
       var author = post.author;
-      title = post.title;
-      description = post.description;
+      var title = post.title;
+      var description = post.description;
       
       db.query(`insert into topic(title, description, created, author_id) 
       values(?,?,now(),?)`,[title, description,author],function(err,results){
@@ -112,7 +114,7 @@ exports.update = function(request, response){
         db.query(`select * from author`,function(err2,authors){
   
           console.log(topic);
-          selectAuthor = template.authorList(authors,topic[0].author_id);
+          selectAuthor = template.authorName(authors,topic[0].author_id);
           console.log(topic[0].author_id);
           html = template.HTML(topic[0].title, '', `
             <h2>${topic[0].title}</h2>

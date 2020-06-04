@@ -1,5 +1,5 @@
 var template ={
-    HTML:function(title, list, body, control) {
+    HTML:function(title, list, body, control, author) {
       return `
       <!doctype html>
       <html>
@@ -9,6 +9,7 @@ var template ={
       </head>
       <body>
         <h1><a href="/">HOME</a></h1>
+          ${author}
           ${list}
           ${control}
           ${body}
@@ -23,7 +24,7 @@ var template ={
       });
       list = list + '</ul>';
       return list;
-    },authorList:function(authors, author_id){
+    },authorName:function(authors, author_id){
       var tag = '';
         authors.forEach(author=> {
           var selected = '';
@@ -40,6 +41,27 @@ var template ={
         </select>
         </p>
       `;
+    },authorList:function(authors){
+      var tag = `
+        <table>
+        <tr>
+            <th>name</th><th>profile</th><th>update</th><th>delete</th>
+        </tr>`;
+        authors.forEach(author => {
+            tag += `<tr>
+                    <td>${author.name}</td>
+                    <td>${author.profile}</td>
+                    <td><a href="/author/update?id=${author.id}">update</a></td>
+                    <td>
+                    <form action="/author/delete" method="post">
+                      <input type="hidden" name="id" value="${author.id}">
+                      <input type="submit" value="delete">
+                    </form>
+                    </td>
+                    </tr>`
+        });
+        tag += '</table>';
+        return tag;
     }
   };
 
