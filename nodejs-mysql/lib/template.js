@@ -23,6 +23,23 @@ var template ={
       });
       list = list + '</ul>';
       return list;
+    },authorList:function(authors, author_id){
+      var tag = '';
+        authors.forEach(author=> {
+          var selected = '';
+          if(author_id === author.id){
+            selected = ' selected';
+          }
+          tag += `<option value=${author.id} ${selected}>${author.name}</option>`;
+        });
+      return `
+        <p>
+        <h3>Author</h3>
+        <select name="author">
+          ${tag}
+        </select>
+        </p>
+      `;
     }
   };
 
