@@ -120,7 +120,6 @@ var app = http.createServer(function (request, response) {
           response.end('sucess');
         });
       });
-      console.log(post);
     });
   }else if(pathname === "/delete_process"){
     var body = "";
