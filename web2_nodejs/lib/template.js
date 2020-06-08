@@ -20,7 +20,7 @@ var template ={
       var list = '<ul>';
       fileList.forEach(function (file) {
         //list = list + `<li><a href="/?id=${file}">${file}</a></li>`
-        list = list + `<li><a href="/page/${file}">${file}</a></li>`
+        list = list + `<li><a href="/topic/${file}">${file}</a></li>`
       });
       list = list + '</ul>';
       return list;
