@@ -1,10 +1,10 @@
-var express = require('express');
 var fs = require('fs');
 var bodyParser = require('body-parser');
 var compression = require('compression');
 var topicRouter = require('./routes/topic');
 var indexRouter = require('./routes/index');
 var helmet = require('helmet');
+var express = require('express');
 var app = express();
 
 //middleware
@@ -32,5 +32,5 @@ app.use(function(err,req,res,next){
 });
 
 app.listen(3000, function () {
-    console.log('Express app listening on port 3000');
+    console.log('Express app listening on port 3000')
 });
