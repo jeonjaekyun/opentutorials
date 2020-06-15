@@ -2,7 +2,10 @@ var fs = require('fs');
 var bodyParser = require('body-parser');
 var compression = require('compression');
 var topicRouter = require('./routes/topic');
+var authRouter = require('./routes/auth');
 var indexRouter = require('./routes/index');
+var session = require('express-session');
+var FileStore = require('session-file-store')(session);
 var helmet = require('helmet');
 var express = require('express');
 var app = express();
@@ -19,8 +22,16 @@ app.get('*',function(req,res,next){
     });
 });
 
+app.use(session({
+    secret:'fdksjfk1@#@!%!osj32@',
+    resave: false,
+    saveUninitialized:true,
+    store:new FileStore()
+}));
+
 app.use('',indexRouter);
 app.use('/topic',topicRouter);
+app.use('/auth', authRouter);
 
 app.use(function(req,res,next){
     res.status(404).send('Sorry can`t find that!');

@@ -1,11 +1,16 @@
 var express = require('express');
 var router = express.Router();
 var template = require('../lib/template');
+var auth = require('../lib/auth');
 var sanitizeHtml = require('sanitize-html');
 var fs = require('fs');
 var path = require('path');
 
 router.get('/create', function (req, res) {
+    if(auth.isOwner(req,res)===false){
+        res.redirect('/');
+        return false;
+    }
     var title = 'WEB - Create';
     var html = template.HTML(title, '', `
         <h2>${title}</h2>
@@ -19,11 +24,15 @@ router.get('/create', function (req, res) {
                 <input type="submit" value="등록">
             </p>
         </form>
-      `, '');
+      `, '',auth.statusUI(req,res));
     res.send(html);
 });
 
 router.post('/create', function (req, res) {
+    if(auth.isOwner(req,res)===false){
+        res.redirect('/');
+        return false;
+    }
     var post = req.body;
     console.log(post);
     var title = sanitizeHtml(post.title);
@@ -34,6 +43,10 @@ router.post('/create', function (req, res) {
 });
 
 router.get('/update/:pageId', function (req, res) {
+    if(auth.isOwner(req,res)===false){
+        res.redirect('/');
+        return false;
+    }
     var filterdId = path.parse(req.params.pageId).base;
     fs.readFile(`./data/${filterdId}`, 'utf8', function (err, description) {
         
@@ -49,13 +62,17 @@ router.get('/update/:pageId', function (req, res) {
                     <p>
                         <input type="submit" value="수정">
                     </p>
-                </form>`, '');
+                </form>`, '',auth.statusUI(req,res));
         res.send(html);
 
     });
 });
 
 router.post('/update', function (req, res) {
+    if(auth.isOwner(req,res)===false){
+        res.redirect('/');
+        return false;
+    }
     var post = req.body;
     var id = post.id;
     var title = post.title;
@@ -69,6 +86,10 @@ router.post('/update', function (req, res) {
 });
 
 router.post('/delete', function (req, res) {
+    if(auth.isOwner(req,res)===false){
+        res.redirect('/');
+        return false;
+    }
     var post = req.body;
     console.log(post);
     var id = post.id;
@@ -99,7 +120,7 @@ router.get('/:pageId', function (req, res, next) {
                         <input type="hidden" name="id" value="${sTitle}">
                         <input type="submit" value="delete">
                     </form>
-                `);
+                `,auth.statusUI(req,res));
             res.send(html);
         }
     });
