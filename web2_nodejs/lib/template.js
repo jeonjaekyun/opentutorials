@@ -1,5 +1,5 @@
 var template ={
-    HTML:function(title, list, body, control) {
+    HTML:function(title, list, body, control,authStatusUI='<a href="/login">Login</a>') {
       return `
       <!doctype html>
       <html>
@@ -8,7 +8,7 @@ var template ={
         <meta charset="utf-8">
       </head>
       <body>
-        <a href="/login">Login</a>
+        ${authStatusUI}
         <h1><a href="/">WEB</a></h1>
           ${list}
           ${control}
@@ -20,8 +20,8 @@ var template ={
     },list:function(fileList) {
       var list = '<ul>';
       fileList.forEach(function (file) {
-        //list = list + `<li><a href="/?id=${file}">${file}</a></li>`
-        list = list + `<li><a href="/topic/${file}">${file}</a></li>`
+        list = list + `<li><a href="/?id=${file}">${file}</a></li>`
+        //list = list + `<li><a href="/topic/${file}">${file}</a></li>`
       });
       list = list + '</ul>';
       return list;
